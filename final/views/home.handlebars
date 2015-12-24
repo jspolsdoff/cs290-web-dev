@@ -1,0 +1,79 @@
+<h1>Exercise Tracker By James Spolsdoff</h1>
+
+<form>
+    <fieldset>
+    	<legend>Add Exercise</legend>
+	    <label for="name">Name</label>
+	    <input type="text" id="name">
+
+	    <label for="reps">Reps</label>
+	    <input type="text" id="reps">
+
+	    <label for="weight">Weight</label>
+	    <input type="text" id="weight">
+
+	    <label for="date">Date</label>
+	    <input type="text" id="date">
+
+	    <label for="lbs">Pounds?</label>
+	    <input type="text" id="lbs">
+
+	    <input type="submit" value="Submit" id="exerciseSubmit">
+	</fieldset>
+</form>
+
+<table>
+	<tr>
+	    <th style="display:none;">id</th>
+	    <th>Name</th>
+	    <th>Reps</th>
+	    <th>Weight</th>
+	    <th>Date</th>
+	    <th>Pounds?</th>
+	    <th></th>
+	    <th></th>
+	</tr>
+
+	{{#each results}}
+	<tr>
+	    <td id="id{{id}}" style="display:none;">{{id}}</td>
+	    <td>{{name}}</td>
+	    <td>{{reps}}</td>
+	    <td>{{weight}}</td>
+	    <td>{{date}}</td>
+	    <td>{{lbs}}</td>
+	    <td><a href="update-form?id={{id}}">Edit</a></td>
+	    <td><button id="delete{{id}}" type="button">Delete</button></td>
+	</tr>
+	{{/each}}
+</table>
+
+<script>
+	document.addEventListener("DOMContentLoaded", bindButtons);
+
+	function bindButtons(){
+		document.getElementById("exerciseSubmit").addEventListener("click", function(event)
+		{
+			var req = new XMLHttpRequest();
+			var name = document.getElementById('name').value;
+			var reps = document.getElementById('reps').value;
+			var weight = document.getElementById('weight').value;
+			var date = document.getElementById('date').value;
+			var lbs = document.getElementById('lbs').value;
+			req.open("GET", "http://52.34.52.113:3000/insert?name="+name+"&reps="+reps+"&weight="+weight+"&date="+date+"&lbs="+lbs, false);
+			req.setRequestHeader('Content-Type', 'application/json');
+			req.send();
+		})
+
+		{{#each results}}
+			document.getElementById("delete{{id}}").addEventListener("click", function(event)
+			{
+				var req = new XMLHttpRequest();
+				var id = document.getElementById('id{{id}}').innerHTML;
+				req.open("GET", "http://52.34.52.113:3000/delete?id="+id, false);
+				req.setRequestHeader('Content-Type', 'application/json');
+				req.send(); 
+			})
+		{{/each}}
+	}
+</script>

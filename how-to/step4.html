@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CS290 How-To By James Spolsdoff | Step 4</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/shop-homepage.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">CS290 How-To By James Spolsdoff</a>
+            </div>
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <p class="lead">Table Of Contents</p>
+                <div class="list-group">
+                    <a href="index.html" class="list-group-item">Intro</a>
+                    <a href="step1.html" class="list-group-item">What is Rails?</a>
+                    <a href="step2.html" class="list-group-item">Getting Started?</a>
+                    <a href="step3.html" class="list-group-item">Laying the Foundation</a>
+                    <a href="step4.html" class="list-group-item">Flexing Your Highchart Muscle</a>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+
+                <h1>Flexing Your HighChart Muscle</h1>
+
+                <p>Alright so we have a temperature and time information uploaded into our database now we need to make it look pretty.</p>
+
+                <p>Go over to <a href="http://www.highcharts.com/">Highcharts</a> and download to necessary files for our application.</p>
+                
+                <p>After that go over to the Demo page and let’s find a nice format to visualize our data.</p> 
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/zoomable.png" style="width: 100%">
+                  </div>
+                </div>
+                
+                <p>Well looks like the “Time series, zoomable” would make the most sense with the data set we have. Let’s click on the ‘edit in JSFiddle’ to see what we are working with.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/html.png" style="width: 100%">
+                  </div>
+                </div>
+                
+                <p>So first thing we see is the HTML we need to add to our index.html.erb page. We will add the two JS files to our applications asset pipeline. Check out the Rails documentation if you are unsure about how to do this. If you’ve used the Google Maps API the next line looks familiar. We need to make sure we include a div in order to hold our graph. Let’s go ahead and add that to our page now.
+                
+                <p>Below that we have the Javascript for this visualization.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/json.png" style="width: 100%">
+                  </div>
+                </div> 
+                
+                <p>We can see that it is using the jQuery framework and loading JSON-endoed data from the server using a GET HTTP request.
+                That tells us that our data for this graph will need to be formatted as JSON. Let’s copy and paste that address to take a look at the format and be sure.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/data.png" style="width: 100%">
+                  </div>
+                </div>
+                
+                <p>Looking over the file everything makes sense. It should be noted that the API expects your date data to be in UTC format. The documentation doesn't do a great job of telling you this. We already formatted our time/date in UTC format when we created our import method.</p> 
+                
+                <p>We can remove this piece of the code since we will be pulling from our database instead of an external source. Although it is good to know that we can get JSON formatted data from outside feeds to display in our application.</p>
+                
+                <p>Now we come to the part of the code that allows us to customize the graph. We see that the #container references the div we created on the page.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/settings.png" style="width: 100%">
+                  </div>
+                </div>
+                
+                <p>We know we want to keep the zoomType to the ‘x’ axis. It wouldn’t make sense to zoom along the ‘y’ axis. Let’s change the title of the graph to Temperature Graph. Lastly the yAxis title needs to be temperature and not exchange rate. Everything after that is to customize the visual look of your graph and can be referenced in the API documentation.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/series.png" style="width: 100%">
+                  </div>
+                </div>
+                
+                <p>Skip down to the very bottom of the script where it has the series. We see that the data variable is referenced here. That tells us that our JSON formatted temperature data has to go here. To make this simple lets add the follow imbedded Ruby to replace ‘data’.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/data_loop.png" style="width: 100%">
+                  </div>
+                </div>
+                
+                <p>What we are doing here is using the Ruby map method to create an array of date and temperature points. At the end we formatted it in JSON.</p>
+                
+                <p>We need to now include all of this Javascript in our index page. Just copy and paste it at the bottom of the page.</p>
+                
+                <p>So now we are pretty much done. Let’s start our Rails server, open up our index page, upload a CSV and see what we get.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/finish.png" style="width: 100%">
+                  </div>
+                </div>
+                
+                <p>Wow! Looks pretty nice if you ask me. Now you can use any of the other Highcharts visualizations in the same manner. Hope you found my How-To helpful.</p>
+
+                <nav>
+                  <ul class="pager">
+                    <li class="previous"><a href="step3.html"><span aria-hidden="true">&larr;</span>Previous</a></li>
+                    <li class="next"><a href="index.html">Back To Start<span aria-hidden="true">&rarr;</span></a></li>
+                  </ul>
+                </nav>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <div class="container">
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; James Spolsdoff 2015</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CS290 Final Project</title>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<form>
+		    <fieldset>
+		    	<legend>Add Exercise</legend>
+			    <label for="name">Name</label>
+			    <input type="text" id="name">
+
+			    <label for="reps">Reps</label>
+			    <input type="text" id="reps">
+
+			    <label for="weight">Weight</label>
+			    <input type="text" id="weight">
+
+			    <label for="date">Date</label>
+			    <input type="text" id="date">
+
+			    <label for="lbs">Pounds?</label>
+			    <input type="text" id="lbs">
+
+			    <input type="submit" value="Submit" id="exerciseSubmit">
+			</fieldset>
+		</form>
+	
+	<table>
+	    <tr>
+	        <th style="display:none;">id</th>
+	        <th>Name</th>
+	        <th>Reps</th>
+	        <th>Weight</th>
+	        <th>Date</th>
+	        <th>Pounds?</th>
+	        <th></th>
+	        <th></th>
+	    </tr>
+	    <tr>
+	        <td style="display:none;">1</td>
+	        <td>Bench Press</td>
+	        <td>10</td>
+	        <td>160</td>
+	        <td>2015-03-22</td>
+	        <td>1</td>
+	        <td><button type="button">Edit</button></td>
+	        <td><button type="button">Delete</button></td>
+	    </tr>
+	    <tr>
+	        <td style="display:none;">2</td>
+	        <td>Military Press</td>
+	        <td>12</td>
+	        <td>120</td>
+	        <td>2015-03-22</td>
+	        <td>1</td>
+	        <td><button type="button">Edit</button></td>
+	        <td><button type="button">Delete</button></td>
+	    </tr>
+	</table>
+	<script src="script.js"></script>
+	</body>
+</html>

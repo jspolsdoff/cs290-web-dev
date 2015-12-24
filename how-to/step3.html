@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CS290 How-To By James Spolsdoff | Step 3</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/shop-homepage.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">CS290 How-To By James Spolsdoff</a>
+            </div>
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <p class="lead">Table Of Contents</p>
+                <div class="list-group">
+                    <a href="index.html" class="list-group-item">Intro</a>
+                    <a href="step1.html" class="list-group-item">What is Rails?</a>
+                    <a href="step2.html" class="list-group-item">Getting Started?</a>
+                    <a href="step3.html" class="list-group-item">Laying the Foundation</a>
+                    <a href="step4.html" class="list-group-item">Flexing Your Highchart Muscle</a>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+
+                <h1>Laying the Foundation</h1>
+
+                <p>Alright now that we have our development environment set up and a newly created app we can get started with getting everything set up to use the Highcharts API.</p>
+
+                <p>First let me let give you a hypothetical use case for this application. A local restaurant utilizes a device to monitor the temperature of their walk in fridge. This device stores corresponding date and temperature data points for a giving time period. We’ll be giving a user the ability to download and visualize a CSV from a temperature recording device.</p>
+
+                <p>We will now need to create a model, controller, and a view for this temperature recorder application.</p> 
+
+                <p>Let’s start with the model. So we need to create a temperature data model. We do this by going to the command line and typing in the following command.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/new_model.png" style="width: 100%">
+                  </div>
+                </div>
+
+                <p>After you hit enter you’ll see some stuff happen. So you’re probably wondering what I just had you do. In a nutshell you just created a model that we can work with in an object oriented fashion as well as a migration to create a table in our database to upload the CSV files to.</p>
+
+                <p>Now run the follow command.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/db_migrate.png" style="width: 100%">
+                  </div>
+                </div>
+
+                <p>This will create the actual table in your database. Let’s take a closer look at what we did. You can see the table if you navigate to the db folder and open up the scheme.rb.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/db_table.png" style="width: 100%">
+                  </div>
+                </div>
+
+                <p>Take a look and you can see the different data columns that you created in the table through the command you ran. As a side note if you’re taking CS340 you’ll remember from week 8 there was a lecture on Object Relationship Mapping. When we created this table we actually used an ORM called ActiveRecord.</p>
+
+                <p>We need to now create a method in our model to allow us to import CSV files. First though we need to require the Ruby CSV library in our application. Go to the application.rb file in the config folder and add the following line.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/require_csv.png" style="width: 100%">
+                  </div>
+                </div>
+
+                <p>After you do that open up the temp_datum.rb model and insert the following code.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/temp_datum_model.png" style="width: 100%">
+                  </div>
+                </div>
+
+                <p>Let’s walkthrough it briefly. First we are created an import method that takes as parameters a file and serial_num variable. Next a counter variable is initialized that will count the number of recorders we imported from the file. After that a foreach loop goes through every row of the CSV file and parses the data and imports it into our database while incrementing the counter. At the end you’ll see we return the counter variable.</p>
+
+                <p>Now we need to create a controller. Just like we did before run the following command.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/new_controller.png" style="width: 100%">
+                  </div>
+                </div>
+
+                <p>You’ll find this file in the app/controllers directory. We need to create two methods within our controller. One for the index where we will view and upload the data and one which does the actually importing of the CSV file.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/controller_methods.png" style="width: 100%">
+                  </div>
+                </div>
+
+                <p>The index method is pretty self-explanatory, we are simply retrieving all the data points that we uploaded from the CSV file from our database and storing them in a variable called @temp_date. The import method has a variable call count that is set equal to the import method. The arguments passed to this import method are actually from a submitted form that we will see below in the view. If you remember we had the import method return the count of the number of recorders added to it makes sense. Finally we have the submitted form redirect back to our index back and display an alert letting the user know how many data points have been imported from the device.</p>
+
+                <p>Finally let’s make the view file. Create a file called index.html.erb in the app/views/temp_data folder. Just like PHP the erb extension allows us to imbed Ruby code in our HTML.</p>
+
+                <p>Now we need to add a form for the user to be able to enter a serial number and select the file they would like to upload. Include the following code on the page.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/csv_view_form.png" style="width: 100%">
+                  </div>
+                </div>
+
+                <p>This code uses some of Rails built in form helps. Refer to the documentation for a deeper explanation.</p>
+
+                <p>Now start your Rails server and take a look at what you’ve done so far.</p>
+
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <img src="images/import_table.png" style="width: 100%">
+                  </div>
+                </div>
+
+                <p>Pretty neat right. Now in the next step we will use Highcharts to visualize the data we imported.</p>
+
+                <nav>
+                  <ul class="pager">
+                    <li class="previous"><a href="step2.html"><span aria-hidden="true">&larr;</span>Previous</a></li>
+                    <li class="next"><a href="step4.html">Next<span aria-hidden="true">&rarr;</span></a></li>
+                  </ul>
+                </nav>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <div class="container">
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; James Spolsdoff 2015</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
